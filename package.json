@@ -1,6 +1,6 @@
 {
   "name": "ai-desktop-assistant",
-  "private": true,
+  "private": false,
   "workspaces": [
     "apps/*",
     "ui/*",
