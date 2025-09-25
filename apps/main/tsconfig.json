@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "outDir": "dist",
+    "rootDir": "../../",
+    "strict": true,
+    "types": ["node"],
+    "skipLibCheck": true,
+    "typeRoots": [
+      "./src/types",
+      "./node_modules/@types"
+    ]
+  },
+  "include": ["src", "../../packages/shared"]
+}

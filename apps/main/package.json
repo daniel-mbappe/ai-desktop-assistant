@@ -1,0 +1,57 @@
+{
+  "name": "@app/main",
+  "version": "0.0.1",
+  "private": true,
+  "main": "dist/main.cjs",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "cross-env OVERLAY_URL=http://localhost:5173 HUD_URL=http://localhost:5174 ELECTRON_OZONE_PLATFORM_HINT=x11 concurrently -k -r \"tsup --watch\" \"wait-on tcp:5173 tcp:5174 && electronmon .\"",
+    "build:main": "tsup",
+    "start": "electron .",
+    "pack:linux": "electron-builder --linux AppImage deb"
+  },
+  "dependencies": {
+    "electron": "^31.3.0",
+    "socket.io-client": "^4.8.1",
+    "vosk": "^0.3.39"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.2",
+    "cross-env": "^7.0.3",
+    "electron-builder": "^24.13.3",
+    "electron-rebuild": "^3.2.9",
+    "electronmon": "^2.0.2",
+    "tsup": "^8.0.2",
+    "typescript": "~5.8.3",
+    "wait-on": "^8.0.0"
+  },
+  "build": {
+    "appId": "com.example.aigirl",
+    "productName": "AI Girl",
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../../ui/overlay/dist",
+        "to": "ui/overlay"
+      },
+      {
+        "from": "../../ui/hud/dist",
+        "to": "ui/hud"
+      },
+      {
+        "from": "../../assets",
+        "to": "assets"
+      }
+    ],
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Utility"
+    }
+  }
+}

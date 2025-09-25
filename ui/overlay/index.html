@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: blob:;"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Overlay</title>
+    <style>
+      html, body, #app { width: 100%; height: 100%; margin: 0; overflow: hidden; background: transparent; }
+      /* Important: let clicks pass through the overlay by default */
+      body { pointer-events: none; }
+      /* We'll selectively opt-in pointer-events later for interactive bits */
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

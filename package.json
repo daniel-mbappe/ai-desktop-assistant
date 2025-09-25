@@ -1,0 +1,17 @@
+{
+  "name": "ai-desktop-assistant",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "ui/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -r \"yarn workspace @ui/overlay dev\" \"yarn workspace @ui/hud dev\" \"yarn workspace @app/main dev\"",
+    "build": "yarn workspace @ui/overlay build && yarn workspace @ui/hud build && yarn workspace @app/main build:main",
+    "pack:linux": "yarn build && yarn workspace @app/main pack:linux"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
