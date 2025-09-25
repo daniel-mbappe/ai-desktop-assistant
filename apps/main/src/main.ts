@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Tray, Menu, globalShortcut, nativeImage } from 'electron';
+import { app, session, BrowserWindow, ipcMain, Tray, Menu, globalShortcut, nativeImage } from 'electron';
 import * as path from 'node:path';
 
 const isMac = process.platform === 'darwin';
@@ -41,6 +41,8 @@ async function createWindows() {
       backgroundThrottling: false
     }
   });
+
+  overlayWin.webContents.openDevTools({ mode: 'detach' });
 
   overlayWin.setIgnoreMouseEvents(true, { forward: true });
 
@@ -132,9 +134,35 @@ function setupIpc() {
   });
 }
 
+function patchCSPForProd() {
+  // Only touch CSP in packaged builds, not during Vite dev
+  if (!app.isPackaged) return;
+
+  const ses = session.defaultSession;
+  // Scope to your app protocol (electron-builder uses app:// in prod)
+  ses.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        "Content-Security-Policy": [
+          // allow self, blobs, data URIs, file:// for textures
+          "default-src 'self' blob: data: filesystem: file:;",
+          "img-src 'self' blob: data: filesystem: file:;",
+          "media-src 'self' blob: data: filesystem: file:;"
+        ],
+      },
+    });
+  });
+}
+
 app.whenReady().then(async () => {
+  // 1. Patch CSP before creating windows
+  patchCSPForProd();
+
+  // 2. Then create windows
   await createWindows();
 
+  // 3. macOS re-activate logic
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindows();
   });
