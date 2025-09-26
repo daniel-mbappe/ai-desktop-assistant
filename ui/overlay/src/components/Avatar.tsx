@@ -5,21 +5,7 @@ import { useFrame } from "@react-three/fiber";
 
 export default function Avatar() {
   const group = useRef<THREE.Group>(null!);
-  const { scene, animations } = useGLTF("/models/michelle.glb");
-
-  scene.traverse((child) => {
-    if ((child as THREE.Mesh).isMesh) {
-      const mesh = child as THREE.Mesh;
-      console.log("Mesh:", mesh.name);
-      if (Array.isArray(mesh.material)) {
-        mesh.material.forEach((mat, i) => {
-          console.log(`  Material[${i}]:`, mat);
-        });
-      } else {
-        console.log("  Material:", mesh.material);
-      }
-    }
-  });
+  const { scene, animations } = useGLTF("/models/michelle/michelle.gltf");
 
   // Optional animation mixer (if GLB has animations)
   const mixer = useRef<THREE.AnimationMixer>(null);
@@ -34,6 +20,10 @@ export default function Avatar() {
 
   useFrame((_, delta) => {
     mixer.current?.update(delta);
+
+    // if (group.current) {
+    //   group.current.rotation.y += delta * 0.5;
+    // }
   });
 
   return (
@@ -46,4 +36,4 @@ export default function Avatar() {
   );
 }
 
-useGLTF.preload("/models/michelle.glb");
+useGLTF.preload("/models/michelle/michelle.gltf");

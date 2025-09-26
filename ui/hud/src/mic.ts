@@ -9,31 +9,6 @@ let source: MediaStreamAudioSourceNode | null = null;
 export async function startMic() {
   if (audioContext) return;
 
-  // const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  // audioContext = new AudioContext();
-  // processor = audioContext.createScriptProcessor(4096, 1, 1);
-  // source = audioContext.createMediaStreamSource(stream);
-
-  // // High-pass filter
-  // const filter = audioContext.createBiquadFilter();
-  // filter.type = "highpass";
-  // filter.frequency.value = 200; // cut below 200Hz
-
-  // // Gain normalize
-  // const gainNode = audioContext.createGain();
-  // gainNode.gain.value = 1.2; // tweak if needed
-
-  // source.connect(filter).connect(gainNode).connect(processor);
-
-  // processor.connect(audioContext.destination);
-  // processor.onaudioprocess = (event) => {
-  //   const input = event.inputBuffer.getChannelData(0);
-  //   const pcm16 = floatTo16BitPCM(input);
-  //   socket.emit("audio_chunk", pcm16);
-  // };
-
-
-
   audioContext = new AudioContext({ sampleRate: 16000 }); // force 16kHz if supported
   const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
