@@ -163,7 +163,14 @@ async function createWindows() {
 
 function setupTray() {
   const iconPath = isDev ? path.join(process.cwd(), 'assets', 'tray.png') : res('assets/tray.png');
-  const icon = nativeImage.createFromPath(iconPath);
+
+  let icon = nativeImage.createFromPath(iconPath);
+
+  // On macOS, resize & force template image
+  if (process.platform === "darwin") {
+    icon = icon.resize({ width: 16, height: 16 });
+    icon.setTemplateImage(true);
+  }
 
   const buildMenu = () => {
     const displays = screen.getAllDisplays();
